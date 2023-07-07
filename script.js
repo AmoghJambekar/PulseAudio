@@ -88,9 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelAnimationFrame(myReq);
       }
     }
-    
+
     function restart() {
       audio1.currentTime = 0;
+      animate();
+      
     }
 
 });
