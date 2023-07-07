@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   audio1.src = "tune.mp3";
   audio1.crossOrigin = "anonymous";
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // for safari browser
-  let x = 0; 
+  let x = 0; s
 
 
   const container = document.getElementById("container");
