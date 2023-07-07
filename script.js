@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
     const playPause = document.getElementById("playPause");
-
+    const restartButton = document.getElementById("restart");
     playPause.addEventListener('click', playback);
     let myReq;
-
+    restartButton.addEventListener("click", restart);
     function playback() {
       if (audio1.paused) {
         audio1.play();
@@ -88,4 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelAnimationFrame(myReq);
       }
     }
+    function restart() {
+      audio1.currentTime = 0;
+    }
+
 });
