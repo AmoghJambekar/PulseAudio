@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
   analyser = audioCtx.createAnalyser(); 
   audioSource.connect(analyser); 
   analyser.connect(audioCtx.destination);
-  analyser.fftSize = 64; 
+  analyser.fftSize = 128; 
   const bufferLength = analyser.frequencyBinCount; 
   const dataArray = new Uint8Array(bufferLength); 
 
@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       ctx.fillRect(
           canvas.width / 2 - x,
-          canvas.height - barHeight + 10,
+          canvas.height - barHeight,
           barWidth,
-          barHeight + 3
+          barHeight
       );
       x += barWidth;
   }
