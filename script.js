@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
   analyser = audioCtx.createAnalyser(); 
   audioSource.connect(analyser); 
   analyser.connect(audioCtx.destination);
-  analyser.fftSize = 128; 
+  analyser.fftSize = 64; 
   const bufferLength = analyser.frequencyBinCount; 
   const dataArray = new Uint8Array(bufferLength); 
 
-  const barWidth = canvas.width / 2.03333 /  bufferLength; 
+  const barWidth = canvas.width / 2 /  bufferLength; 
 
   const drawVisualizer = ({ bufferLength, dataArray, barWidth }) => {
     let barHeight;
