@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function playback() {
       if (audio1.paused) {
         audio1.play();
-        playPause.innerHTML = "⏸️"; // Change to pause icon
+        playPause.innerHTML = "⏸"; // Change to pause icon
         animate();
       } else {
         audio1.pause();
