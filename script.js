@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   let audio1 = new Audio();
-  audio1.src = "tune.mp3";
+  const selectAudioButton = document.getElementById('selectAudioButton');
+  const audioFileInput = document.getElementById('audioFileInput');
+
+  audioFileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const fileURL = URL.createObjectURL(file);
+    audio1.src = fileURL;
+  });
+  
   audio1.crossOrigin = "anonymous";
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // for safari browser
   let x = 0;
