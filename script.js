@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
   audio1.src = "tune.mp3";
   audio1.crossOrigin = "anonymous";
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // for safari browser
-  let x = 0; s
-
+  let x = 0;
+  let visualizationType = "bars";
 
   const container = document.getElementById("container");
   const canvas = document.getElementById("canvas");
@@ -20,78 +20,127 @@ document.addEventListener('DOMContentLoaded', function() {
   analyser = audioCtx.createAnalyser(); 
   audioSource.connect(analyser); 
   analyser.connect(audioCtx.destination);
-  analyser.fftSize = 128; 
+  analyser.fftSize = 256; 
   const bufferLength = analyser.frequencyBinCount; 
   const dataArray = new Uint8Array(bufferLength); 
 
   const barWidth = canvas.width / 2 /  bufferLength; 
 
-  const drawVisualizer = ({ bufferLength, dataArray, barWidth }) => {
-    let barHeight;
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i];
-      const hue = (i / bufferLength) * 360;
-      const saturation = 100;
-      const lightness = 50;
-
-      ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-      ctx.fillRect(
-          canvas.width / 2 - x,
-          canvas.height - barHeight,
-          barWidth,
-          barHeight
-      );
-      x += barWidth;
+// Function to draw a circle
+  function drawCircle(x, y, radius, color) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.closePath();
   }
 
 
+// Function to visualize the music as circles
+function drawCircleVisualizer({ bufferLength, dataArray, barWidth }) {
+  let barHeight;
   for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i];
-      const hue = (i / bufferLength) * 360;
-      const saturation = 100;
-      const lightness = 50;
+    const barHeight = dataArray[i] * 2;
+    const hue = (i / bufferLength) * 360;
+    const saturation = 100;
+    const lightness = 50;
 
-      ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-      ctx.fillRect(
-          x,
-          canvas.height - barHeight,
-          barWidth,
-          barHeight
-      );
-      x += barWidth;
-    }
+    const centerX = canvas.width / 2 - x + barWidth / 2;
+    const centerY = canvas.height - barHeight + barHeight / 2;
+    const radius = barHeight / 2;
+    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
+    drawCircle(centerX, centerY, radius, color);
 
+    x += barWidth;
   }
+  
+}
 
-  function animate() {
+// Function to visualize the music as bars
+function drawBarVisualizer({ bufferLength, dataArray, barWidth }) {
+  let barHeight;
+  for (let i = 0; i < bufferLength; i++) {
+    const barHeight = dataArray[i] * 2;
+    const hue = (i / bufferLength) * 360;
+    const saturation = 100;
+    const lightness = 50;
+
+    ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    ctx.fillRect(
+        canvas.width / 2 - x,
+        canvas.height - barHeight,
+        barWidth,
+        barHeight
+    );
+    x += barWidth;
+}
+
+
+for (let i = 0; i < bufferLength; i++) {
+    const barHeight = dataArray[i] * 2;
+    const hue = (i / bufferLength) * 360;
+    const saturation = 100;
+    const lightness = 50;
+
+    ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    ctx.fillRect(
+        x,
+        canvas.height - barHeight,
+        barWidth,
+        barHeight
+    );
+    x += barWidth;
+  }
+}
+
+
+  function animate(type) {
     x = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height); // clears the canvas
     analyser.getByteFrequencyData(dataArray); // copies the frequency data into the dataArray in place. Each item contains a number between 0 and 255
-    drawVisualizer({ bufferLength, dataArray, barWidth });
-    requestAnimationFrame(animate); // calls the animate function again. This method is built in
+    if (type = "bars") {
+      drawBarVisualizer({ bufferLength, dataArray, barWidth });
+      myReq = requestAnimationFrame(() => animate("bars"));
+    }
+    else {
+      drawCircleVisualizer({ bufferLength, dataArray, barWidth });
+      myReq = requestAnimationFrame(() => animate("circles"));
+    }
   }
 
     const playPause = document.getElementById("playPause");
     const restartButton = document.getElementById("restart");
+    const visualizeButton = document.getElementById("visualizationToggle");
     playPause.addEventListener('click', playback);
     restartButton.addEventListener('click', restart);
+    visualizeButton.addEventListener('click',toVisualise);
     let myReq;
     function playback() {
       if (audio1.paused) {
         audio1.play();
         playPause.innerHTML = "⏸"; // Change to pause icon
-        animate();
+        animate(visualizationType);
       } else {
         audio1.pause();
-        playPause.innerHTML = "▶️"; // Change to play icon
+        playPause.innerHTML = "▶"; // Change to play icon
         cancelAnimationFrame(myReq);
       }
     }
     function restart() {
       audio1.currentTime = 0;
       animate();
-
     }
 
+    function toVisualise() {
+      if (visualizationType === "circles") {
+        visualizationType = "bars";
+        visualizeButton.innerHTML = "📊"; // Change to bars emoji
+        restart();
+      } else {
+        visualizationType = "circles";
+        visualizeButton.innerHTML = "🥧"; // Change to circles emoji
+        restart();
+    }
+  }
 });
