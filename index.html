@@ -16,15 +16,20 @@
       <button id="backButton">⏮</button>
       <button id="playPause">▶</button>
       <button id="skipButton">⏭</button> <br>  
-      <button id="spotifyButton">
-        <img src="spotifyLogo.jpg" id="spotifyLogo">
-      <button id="visualizationToggle" style="margin-right: 15px;margin-left: 15px;">📊</button>
-      <button id="restart">⟳</button>
-    </div>
+      <div class="button-row">
+        <button id="visualizationToggle" style="margin-right: 15px;">📊</button>
+        <div class="button-container">
+          <label for="audioFileInput" id="selectAudioButton" class="custom-button">
+            <span class="emoji"></span> 📟
+          </label>
+          <input type="file" id="audioFileInput" accept="audio/*" style="display: none;">
+        </div>
+        <button id="restart" style="margin-left: 10px;">⟳</button>
+      </div>
     <div id="container">
       <canvas id="canvas"></canvas>
       <audio id="audio">
-        <source src='tune.mp3' type="audio/mp3">
+        <source type="audio/*">
       </audio>
     </div>
     <script src="script.js"></script>
