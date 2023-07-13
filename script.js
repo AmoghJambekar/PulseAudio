@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  let audio1 = new Audio();
+  let audio1 = new Audio()
   const selectAudioButton = document.getElementById('selectAudioButton');
   const audioFileInput = document.getElementById('audioFileInput');
 
@@ -69,7 +69,7 @@ function drawCircleVisualizer({ bufferLength, dataArray, barWidth }) {
 function drawBarVisualizer({ bufferLength, dataArray, barWidth }) {
   let barHeight;
   for (let i = 0; i < bufferLength; i++) {
-    const barHeight = dataArray[i] * 2;
+    const barHeight = dataArray[i] * 4;
     const hue = (i / bufferLength) * 360;
     const saturation = 100;
     const lightness = 50;
@@ -86,7 +86,7 @@ function drawBarVisualizer({ bufferLength, dataArray, barWidth }) {
 
 
 for (let i = 0; i < bufferLength; i++) {
-    const barHeight = dataArray[i] * 2;
+    const barHeight = dataArray[i] * 4;
     const hue = (i / bufferLength) * 360;
     const saturation = 100;
     const lightness = 50;
@@ -111,7 +111,7 @@ for (let i = 0; i < bufferLength; i++) {
       drawBarVisualizer({ bufferLength, dataArray, barWidth });
       myReq = requestAnimationFrame(() => animate("bars"));
     }
-    else {
+    else {  
       drawCircleVisualizer({ bufferLength, dataArray, barWidth });
       myReq = requestAnimationFrame(() => animate("circles"));
     }
@@ -125,16 +125,16 @@ for (let i = 0; i < bufferLength; i++) {
     visualizeButton.addEventListener('click',toVisualise);
     let myReq;
     function playback() {
-      if (audio1.paused) {
-        audio1.play();
-        playPause.innerHTML = "⏸"; // Change to pause icon
-        animate(visualizationType);
-      } else {
-        audio1.pause();
-        playPause.innerHTML = "▶"; // Change to play icon
-        cancelAnimationFrame(myReq);
+        if (audio1.paused) {
+          audio1.play();
+          playPause.innerHTML = "⏸"; // Change to pause icon
+          animate(visualizationType);
+        } else {
+          audio1.pause();
+          playPause.innerHTML = "▶"; // Change to play icon
+          cancelAnimationFrame(myReq);
+        }
       }
-    }
     function restart() {
       audio1.currentTime = 0;
       animate();
